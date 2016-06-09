@@ -78,12 +78,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FbxCommon.cpp" />
     <ClCompile Include="FbxReader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FbxReader.def" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FbxCommon.h" />
     <ClInclude Include="FbxReader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

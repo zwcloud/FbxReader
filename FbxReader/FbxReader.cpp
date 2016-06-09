@@ -1,5 +1,22 @@
 #include "FbxReader.h"
 #include <fbxsdk.h>
+#include "FbxCommon.h"
+
+FR_Result Load(void* filePathString, int byteSize, void* context)
+{
+	FbxManager* lSdkManager = NULL;
+	FbxScene* fbxScene;
+	InitializeSdkObjects(lSdkManager, fbxScene);
+	bool bResult = LoadScene(lSdkManager, fbxScene, (const char*)filePathString);
+
+	return FR_Result_Success;
+}
+
+FR_Result Unload(void* context)
+{
+	return FR_Result_Success;
+}
+
 
 FR_Result GetMeshCount()
 {

@@ -2,11 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="FbxReader.cpp" />
+    <ClCompile Include="FbxCommon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="FbxReader.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FbxReader.h" />
+    <ClInclude Include="FbxCommon.h" />
   </ItemGroup>
 </Project>
