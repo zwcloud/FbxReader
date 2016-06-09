@@ -1,0 +1,5 @@
+EXPORTS
+GetMeshCount	@1
+GetMeshNames	@2
+GetPositions	@3
+GetUV			@4
