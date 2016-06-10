@@ -16,6 +16,9 @@ namespace FbxReader_cli
         [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern bool Unload(void* context);
 
+        [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool GetMeshCount(void* context, int* meshCount);
+
         #endregion
 
         #region Wrapper
@@ -37,6 +40,18 @@ namespace FbxReader_cli
         public static bool Unload(IntPtr context)
         {
             return Unload(context.ToPointer());
+        }
+
+        public static bool GetMeshCount(IntPtr context, out int meshCount)
+        {
+            meshCount = 0;
+            int count = 0;
+            bool result = GetMeshCount(context.ToPointer(), &count);
+            if(result)
+            {
+                meshCount = count;
+            }
+            return result;
         }
 
         #endregion

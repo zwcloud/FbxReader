@@ -23,9 +23,23 @@ FR_Result Unload(FR_Context* context)
 	return FR_Result_Success;
 }
 
-FR_Result GetMeshCount(FR_Context* context)
+FR_Result GetMeshCount(FR_Context* context, int* meshCount)
 {
+	*meshCount = 0;
 
+	FbxScene*& scene = (FbxScene*&)(context->Scene);
+	int nodeCount = scene->GetNodeCount();
+	for (int i = 0; i < nodeCount; i++)
+	{
+		FbxNode* node = scene->GetNode(i);
+		if (!node) continue;
+		FbxNodeAttribute* attribute = node->GetNodeAttribute();
+		if (!attribute) continue;
+		if (attribute->GetAttributeType() == FbxNodeAttribute::EType::eMesh)
+		{
+			(*meshCount)++;
+		}
+	}
 	return FR_Result_Success;
 }
 

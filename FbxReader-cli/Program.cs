@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace FbxReader_cli
 {
@@ -8,6 +9,11 @@ namespace FbxReader_cli
         {
             IntPtr context;
             FbxRead.Load("W:\\deer.fbx", out context);
+
+            int meshCount;
+            FbxRead.GetMeshCount(context, out meshCount);
+            Debug.WriteLine("Mesh count: {0}", meshCount);
+
             FbxRead.Unload(context);
         }
     }
