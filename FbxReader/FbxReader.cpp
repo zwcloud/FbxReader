@@ -2,38 +2,44 @@
 #include <fbxsdk.h>
 #include "FbxCommon.h"
 
-FR_Result Load(void* filePathString, int byteSize, void* context)
+FR_Result Load(FR_Context** context, void* filePathString, int byteSize)
 {
-	FbxManager* lSdkManager = NULL;
-	FbxScene* fbxScene;
-	InitializeSdkObjects(lSdkManager, fbxScene);
-	bool bResult = LoadScene(lSdkManager, fbxScene, (const char*)filePathString);
+	*context = (FR_Context*)malloc(sizeof(FR_Context));
+	FbxManager*& manager = (FbxManager*&)(*context)->Manager;
+	FbxScene*& scene = (FbxScene*&)((*context)->Scene);
+	InitializeSdkObjects(manager, scene);
+	bool bResult = LoadScene(manager, scene, (const char*)filePathString);
+	if (!bResult)
+	{
+		return FR_Result_Failed;
+	}
+	return FR_Result_Success;
+}
+
+FR_Result Unload(FR_Context* context)
+{
+	FbxManager* manager = (FbxManager*)(context->Manager);
+	DestroySdkObjects(manager);
+	return FR_Result_Success;
+}
+
+FR_Result GetMeshCount(FR_Context* context)
+{
 
 	return FR_Result_Success;
 }
 
-FR_Result Unload(void* context)
+FR_Result GetMeshNames(FR_Context* context, void** names, int* count)
 {
 	return FR_Result_Success;
 }
 
-
-FR_Result GetMeshCount()
+FR_Result GetPositions(FR_Context* context, int meshIndex, float** positions, int* count)
 {
 	return FR_Result_Success;
 }
 
-FR_Result GetMeshNames(void** names, int* count)
-{
-	return FR_Result_Success;
-}
-
-FR_Result GetPositions(int meshIndex, float** positions, int* count)
-{
-	return FR_Result_Success;
-}
-
-FR_Result GetUV(int meshIndex, int layer, float** texcoods, int* count)
+FR_Result GetUV(FR_Context* context, int meshIndex, int layer, float** texcoods, int* count)
 {
 	return FR_Result_Success;
 }

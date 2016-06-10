@@ -8,11 +8,17 @@ extern "C"
 		FR_Result_Failed
 	};
 
-	FR_Result Load(void* filePathString, int byteSize, void* context);
-	FR_Result Unload(void* context);
+	struct FR_Context
+	{
+		void* Manager;
+		void* Scene;
+	};
 
-	FR_Result GetMeshCount(void* context);
-	FR_Result GetMeshNames(void* context, void** names, int* count);
-	FR_Result GetPositions(void* context, int meshIndex, float** positions, int* count);
-	FR_Result GetUV(void* context, int meshIndex, int layer, float** texcoods, int* count);
+	FR_Result Load(FR_Context** context, void* filePathString, int byteSize);
+	FR_Result Unload(FR_Context* context);
+
+	FR_Result GetMeshCount(FR_Context* context);
+	FR_Result GetMeshNames(FR_Context* context, void** names, int* count);
+	FR_Result GetPositions(FR_Context* context, int meshIndex, float** positions, int* count);
+	FR_Result GetUV(FR_Context* context, int meshIndex, int layer, float** texcoods, int* count);
 }

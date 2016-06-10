@@ -110,11 +110,10 @@ void InitializeSdkObjects(FbxManager*& pManager, FbxScene*& pScene)
     }
 }
 
-void DestroySdkObjects(FbxManager* pManager, bool pExitStatus)
+void DestroySdkObjects(FbxManager* pManager)
 {
     //Delete the FBX Manager. All the objects that have been allocated using the FBX Manager and that haven't been explicitly destroyed are also automatically destroyed.
     if( pManager ) pManager->Destroy();
-	if( pExitStatus ) DebugPrintf("Program Success!\n");
 }
 
 bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename)

@@ -34,6 +34,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,11 +56,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>copy /Y $(SolutionDir)x64\Debug\FbxReader.dll $(TargetDir)
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y $(SolutionDir)x64\Debug\FbxReader.dll $(TargetDir)
 if $(ConfigurationName) ==  Debug (
     copy /Y $(SolutionDir)x64\Debug\FbxReader.pdb $(TargetDir)
 )
-copy /Y $(SolutionDir)x64\Debug\libfbxsdk.dll $(TargetDir)</PreBuildEvent>
+copy /Y $(SolutionDir)x64\Debug\libfbxsdk.dll $(TargetDir)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

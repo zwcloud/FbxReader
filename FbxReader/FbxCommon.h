@@ -13,5 +13,5 @@ const void GetTestFileNameW(wchar_t* buffer);
 #pragma endregion
 
 void InitializeSdkObjects(FbxManager*& pManager, FbxScene*& pScene);
-void DestroySdkObjects(FbxManager* pManager, bool pExitStatus);
+void DestroySdkObjects(FbxManager* pManager);
 bool LoadScene(FbxManager* pManager, FbxDocument* pScene, const char* pFilename);

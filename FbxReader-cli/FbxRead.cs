@@ -11,7 +11,7 @@ namespace FbxReader_cli
         private const string FbxReaderLibName = "FbxReader.dll";
 
         [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
-        private static extern bool Load(void* filePathString, int byteSize, void** context);
+        private static extern bool Load(void** context, void* filePathString, int byteSize);
 
         [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern bool Unload(void* context);
@@ -19,6 +19,7 @@ namespace FbxReader_cli
         #endregion
 
         #region Wrapper
+
         public static bool Load(string filePathString, out IntPtr context)
         {
             int filePathByteCount = Encoding.ASCII.GetByteCount(filePathString);
@@ -27,8 +28,9 @@ namespace FbxReader_cli
             var handle = GCHandle.Alloc(filePathBytes, GCHandleType.Pinned);
             var ptr = handle.AddrOfPinnedObject();
             void* outContext;
-            Load(ptr.ToPointer(), filePathByteCount, &outContext);
+            Load(&outContext, ptr.ToPointer(), filePathByteCount);
             context = new IntPtr(outContext);
+            handle.Free();
             return true;
         }
 
