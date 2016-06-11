@@ -1,7 +1,8 @@
 EXPORTS
 Load			@1
 Unload			@2
-GetMeshCount	@3
-GetMeshNames	@4
-GetPositions	@5
-GetUV			@6
+Free			@3
+GetMeshCount	@4
+GetMeshNames	@5
+GetPositions	@6
+GetUV			@7

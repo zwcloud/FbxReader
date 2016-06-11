@@ -17,7 +17,13 @@ namespace FbxReader_cli
         private static extern bool Unload(void* context);
 
         [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool Free(IntPtr data);
+
+        [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern bool GetMeshCount(void* context, int* meshCount);
+
+        [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool GetMeshNames(void* context, void*** nameStrings, int** nameStringByteSizes, int* count);
 
         #endregion
 
@@ -52,6 +58,51 @@ namespace FbxReader_cli
                 meshCount = count;
             }
             return result;
+        }
+
+        public static bool GetMeshNames(IntPtr context, out string[] names)
+        {
+            void** nameStrings;
+            int* nameStringByteSizes;
+            int count;
+            bool result = GetMeshNames(context.ToPointer(), &nameStrings, &nameStringByteSizes, &count);
+            if(!result)
+            {
+                names = null;
+                return false;
+            }
+
+            if(count == 0)
+            {
+                names = null;
+                return true;
+            }
+
+            names = new string[count];
+
+            IntPtr namesPtr = new IntPtr(nameStrings);
+            IntPtr namesSizePtr = new IntPtr(nameStringByteSizes);
+            Decoder decoder = Encoding.ASCII.GetDecoder();
+            for (int i = 0; i < count; i++)
+            {
+                IntPtr ptr = Marshal.ReadIntPtr(namesPtr, i);
+                IntPtr byteSizePtr = namesSizePtr;
+                int byteSize = Marshal.ReadInt32(byteSizePtr, i);
+            
+                byte[] nameData = new byte[byteSize];
+                Marshal.Copy(ptr, nameData, 0, byteSize);
+                int maxCharCount = Encoding.ASCII.GetMaxCharCount(byteSize);
+                char[] nameChars = new char[maxCharCount];
+                int dummy;
+                bool dummyBool;
+                decoder.Convert(nameData, 0, byteSize, nameChars, 0, maxCharCount, true, out dummy, out dummy, out dummyBool);
+                names[i] = new string(nameChars);
+            }
+
+            Free(namesPtr);
+            Free(namesSizePtr);
+
+            return true;
         }
 
         #endregion

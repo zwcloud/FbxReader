@@ -11,8 +11,22 @@ namespace FbxReader_cli
             FbxRead.Load("W:\\deer.fbx", out context);
 
             int meshCount;
-            FbxRead.GetMeshCount(context, out meshCount);
-            Debug.WriteLine("Mesh count: {0}", meshCount);
+            if(FbxRead.GetMeshCount(context, out meshCount))
+            {
+                Debug.WriteLine("Mesh count: {0}", meshCount);
+            }
+
+            string[] meshNames;
+            if(FbxRead.GetMeshNames(context, out meshNames))
+            {
+                Debug.WriteLine("Mesh names:");
+                Debug.Indent();
+                foreach (var meshName in meshNames)
+                {
+                    Debug.WriteLine(meshName);
+                }
+                Debug.Unindent();
+            }
 
             FbxRead.Unload(context);
         }
