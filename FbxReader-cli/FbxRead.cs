@@ -31,15 +31,16 @@ namespace FbxReader_cli
 
         public static bool Load(string filePathString, out IntPtr context)
         {
-            int filePathByteCount = Encoding.ASCII.GetByteCount(filePathString);
-            byte[] filePathBytes = new byte[filePathByteCount];
-            Encoding.ASCII.GetBytes(filePathString, 0, filePathString.Length, filePathBytes, 0);
-            var handle = GCHandle.Alloc(filePathBytes, GCHandleType.Pinned);
-            var ptr = handle.AddrOfPinnedObject();
             void* outContext;
-            Load(&outContext, ptr.ToPointer(), filePathByteCount);
+            using (PinnedString path = new PinnedString(filePathString))
+            {
+                if(!Load(&outContext, path.Pointer, path.ByteSize))
+                {
+                    context = IntPtr.Zero;
+                    return false;
+                }
+            }
             context = new IntPtr(outContext);
-            handle.Free();
             return true;
         }
 
