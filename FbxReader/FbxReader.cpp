@@ -84,8 +84,26 @@ FR_Result GetMeshNames(FR_Context* context, void*** names, int** sizes, int* cou
 	return FR_Result_Success;
 }
 
-FR_Result GetPositions(FR_Context* context, int meshIndex, float** positions, int* count)
+FR_Result GetControlPoints(FR_Context* context, void* meshNameString, double** controlPoints, int* count)
 {
+	FbxScene*& scene = (FbxScene*&)(context->Scene);
+	FbxString meshName((const char*)meshNameString);
+	FbxNode* node = scene->FindNodeByName(meshName);
+	FbxNodeAttribute* attribute = node->GetNodeAttribute();
+	if (!attribute)
+	{
+		return FR_Result_Failed;
+	}
+	if (attribute->GetAttributeType() != FbxNodeAttribute::EType::eMesh)
+	{
+		return FR_Result_Failed;
+	}
+	FbxMesh* mesh = (FbxMesh*)attribute;
+	FbxVector4* lControlPoints = mesh->GetControlPoints();
+	int controlPointCount = mesh->GetControlPointsCount();
+	*controlPoints = (double*)lControlPoints;
+	*count = controlPointCount;
+
 	return FR_Result_Success;
 }
 
