@@ -28,6 +28,18 @@ namespace FbxReader_cli
                 Debug.Unindent();
             }
 
+            double[] contorlPoints;
+            if(FbxRead.GetControlPoints(context, meshNames[0], out contorlPoints))
+            {
+                Debug.WriteLine("Mesh control points(first 5 ones):");
+                Debug.Indent();
+                for (int i = 0; i < 5; i++)
+                {
+                    Debug.WriteLine("{0},{1},{2}", contorlPoints[3*i], contorlPoints[3*i+1], contorlPoints[3*i+2]);
+                }
+                Debug.Unindent();
+            }
+
             FbxRead.Unload(context);
         }
     }
