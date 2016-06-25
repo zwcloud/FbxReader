@@ -63,5 +63,12 @@ extern "C"
 	*/
 	FR_Result GetControlPoints(FR_Context* context, void* meshNameString, double** controlPoints, int* count);
 
-	FR_Result GetUV(FR_Context* context, int meshIndex, int layer, float** texcoods, int* count);
+	/*
+		Get mesh control point indexes
+		@context [in] the context
+		@meshNameString [in] mesh name string(multibyte string)
+		@indexes [out] array of control point indexes
+		@count [out] count of control point indexes
+	*/
+	FR_Result GetIndexes(FR_Context* context, void* meshNameString, int** indexes, int* count);
 }

@@ -107,7 +107,32 @@ FR_Result GetControlPoints(FR_Context* context, void* meshNameString, double** c
 	return FR_Result_Success;
 }
 
-FR_Result GetUV(FR_Context* context, int meshIndex, int layer, float** texcoods, int* count)
+FR_Result GetIndexes(FR_Context* context, void* meshNameString, int** indexes, int* count)
 {
+	FbxScene*& scene = (FbxScene*&)(context->Scene);
+	FbxString meshName((const char*)meshNameString);
+	FbxNode* node = scene->FindNodeByName(meshName);
+	FbxNodeAttribute* attribute = node->GetNodeAttribute();
+	if (!attribute)
+	{
+		return FR_Result_Failed;
+	}
+	if (attribute->GetAttributeType() != FbxNodeAttribute::EType::eMesh)
+	{
+		return FR_Result_Failed;
+	}
+	FbxMesh* mesh = (FbxMesh*)attribute;
+
+	//TODO Check if any non-triangle existed?
+	int polygonCount = mesh->GetPolygonCount();
+	for (int i = 0; i < polygonCount; i++)
+	{
+		if (3 != mesh->GetPolygonSize(i))
+		{
+			return FR_Result_Failed;//polygon i is not a triangle
+		}
+	}
+	*indexes = mesh->GetPolygonVertices();
+	*count = mesh->GetPolygonVertexCount();
 	return FR_Result_Success;
 }

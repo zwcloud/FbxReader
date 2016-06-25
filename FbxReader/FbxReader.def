@@ -5,4 +5,4 @@ Free				@3
 GetMeshCount		@4
 GetMeshNames		@5
 GetControlPoints	@6
-GetUV				@7
+GetIndexes			@7
