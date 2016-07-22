@@ -28,6 +28,9 @@ namespace FbxReader_cli
         [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
         private static extern bool GetControlPoints(void* context, void* meshNameString, double** controlPoints, int* count);
 
+        [DllImport(FbxReaderLibName, CallingConvention = CallingConvention.Cdecl)]
+        private static extern bool GetIndexes(void* context, void* meshNameString, int** indexes, int* count);
+
         #endregion
 
         #region Wrapper
@@ -128,6 +131,28 @@ namespace FbxReader_cli
                 }
             }
             controlPoints = null;
+            return false;
+        }
+
+        public static bool GetIndexes(IntPtr context, string meshNameString, out int[] indexes)
+        {
+            using (PinnedString meshName = new PinnedString(meshNameString))
+            {
+                int* ptr_native_indexesData;
+                int count;
+                bool result = GetIndexes(context.ToPointer(), meshName.Pointer, &ptr_native_indexesData, &count);
+                if (result)
+                {
+                    indexes = new int[count];
+                    fixed (int* ptr_managed_Data = indexes)
+                    {
+                        ulong byteSize = (ulong)(Marshal.SizeOf(typeof(int)) * count);
+                        Buffer.MemoryCopy(ptr_native_indexesData, ptr_managed_Data, byteSize, byteSize);
+                    }
+                    return true;
+                }
+            }
+            indexes = null;
             return false;
         }
 

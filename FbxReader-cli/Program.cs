@@ -40,6 +40,23 @@ namespace FbxReader_cli
                 Debug.Unindent();
             }
 
+            int[] indexes;
+            if (FbxRead.GetIndexes(context, meshNames[0], out indexes))
+            {
+                Debug.WriteLine("Mesh indexes(first 10 ones):");
+                Debug.Indent();
+                for (int i = 0; i < 10; i++)
+                {
+                    Debug.Write(indexes[i]);
+                    if (i != 9)
+                    {
+                        Debug.Write(',');
+                    }
+                }
+                Debug.Unindent();
+                Debug.Write('\n');
+            }
+
             FbxRead.Unload(context);
         }
     }

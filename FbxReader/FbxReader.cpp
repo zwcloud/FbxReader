@@ -123,7 +123,7 @@ FR_Result GetIndexes(FR_Context* context, void* meshNameString, int** indexes, i
 	}
 	FbxMesh* mesh = (FbxMesh*)attribute;
 
-	//TODO Check if any non-triangle existed?
+	//Check if any non-triangle existed?
 	int polygonCount = mesh->GetPolygonCount();
 	for (int i = 0; i < polygonCount; i++)
 	{
